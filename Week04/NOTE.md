@@ -111,10 +111,8 @@ def DFS(self, tree):
 一旦一个问题可以通过贪心法来解决，那么贪心法一般是解决这个问题的最好方法。由于贪心法的高效性以及其所求得得答案比较接近最优结果，贪心法也可以用作辅助算法或者直接解决一些结果不那么精确的问题。
 
 - 近似算法
-
-- - 判断近似算法的优劣标准如下：
-
-  - - 速度有多快
+  - 判断近似算法的优劣标准如下：
+    - 速度有多快
     - 得到的近似解与最优解的接近程度
 
 可以用来求图中的最小生成树、哈夫曼编码等。
@@ -133,38 +131,26 @@ def DFS(self, tree):
 
 
 
-#### [33. 搜索旋转排序数组](https://leetcode-cn.com/problems/search-in-rotated-sorted-array/)
+#### **练习：**
 
-暴力解法
+使用二分查找，寻找一个半有序数组 [4, 5, 6, 7, 0, 1, 2] 中间无序的地方
+**思路：**
 
-思路：将给定的数组还原成排序数组，再进行二分查找。
-
-但如果单纯用暴力解法还原数组需要从头到尾遍历所以需要O(n)的时间复杂度，可用下面方法简化成O(logn)
-
-1.找到第一个无序的位置还原成排序数组，用O(logn)实现。
-
-2.再用二分查找O(logn)。
+- 找到第一个无序的地方，即找到最小的值
 
 ```javascript
-var search = function(nums, target) {
- if(!nums.length) return -1;
-
+var search = function(nums) {
  let l = 0;
  let r = nums.length - 1;
- let mid = 0;
-
- //暴力还原排序数组,即找到第一个无序的位置(用二分查找实现)
- while (l<=r) {
+ let mid = Math.floor((l+r)/2);
+ while (l < r) {
+  //如果nums[mid] > nums[r]，说明mid~r之间无序，所以l要mid的右边移动继续查找最小值
+  if (nums[mid] > nums[r]) l=mid+1;
+  //否则r
+  else r = mid;
   mid = Math.floor((l+r)/2);
-  if (nums[mid]>nums[mid+1])
-   break;
-  if (nums[mid]>=nums[l]) { 
-   l = mid + 1;
-  }else {
-   r = mid - 1;
-  }
  }
- return -1;
-}
+ return mid;
+};
 ```
 
